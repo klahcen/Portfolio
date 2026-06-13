@@ -455,6 +455,16 @@
       font-weight: 500;
     }
 
+    .hero-subtitle {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 1.25rem;
+      animation: slideUp 0.5s 1.05s ease forwards;
+      opacity: 0;
+    }
+
     .hero-bio {
       font-size: clamp(1rem, 1.5vw, 1.15rem);
       color: var(--text-secondary);
@@ -1010,6 +1020,12 @@
 
     .project-link:hover { gap: 0.7rem; }
 
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+    }
+
     .projects-progress-wrap {
       position: absolute;
       bottom: 2rem;
@@ -1379,12 +1395,12 @@
         </h1>
         <div class="hero-role">
           <div class="hero-role-line"></div>
-          <span class="hero-role-text">Software Engineering Student</span>
+          <span class="hero-role-text">Full-Stack Developer</span>
         </div>
+        <p class="hero-subtitle">Next.js · React · Node.js · PostgreSQL</p>
         <p class="hero-bio">
-          Strong foundation in <strong>C, C++, JavaScript &amp; TypeScript</strong>, with growing experience in
-          full-stack development, DevOps, and cloud-oriented workflows. Built solid technical and teamwork skills
-          through project-based learning at <strong>1337 School</strong> and practical engineering work.
+          6 months production experience at InsureNow (Paris InsurTech). Building real-world web apps,
+          automation pipelines, and AI-powered tools.
         </p>
         <div class="hero-actions">
           <a href="#projects" class="btn-primary">View Projects</a>
@@ -1585,13 +1601,13 @@
         icon: '🤖',
         title: 'Automation & AI',
         desc: 'Workflows and intelligent integrations',
-        tags: ['n8n Workflows', 'Tesseract.js OCR', 'Chatbot Integration'],
+        tags: ['n8n', 'Claude API', 'Apify', 'Tesseract.js OCR', 'Chatbot Integration'],
       },
       {
         icon: '🚀',
         title: 'Tools & Platforms',
         desc: 'DevOps, deployment, and environment',
-        tags: ['Git', 'Docker', 'Linux', 'VS Code', 'Hostinger SMTP'],
+        tags: ['Git', 'Docker', 'Linux', 'VS Code', 'Railway', 'Hostinger SMTP'],
       },
       {
         icon: '🧠',
@@ -1604,6 +1620,47 @@
     const projects = [
       {
         number: '01',
+        title: 'Upwork Offer Matcher',
+        subtitle: 'AI-Powered Job Matching',
+        desc: 'AI-powered job matching platform. Scrapes Upwork jobs via Apify, analyzes them against my profile using Claude API, and ranks by fit score.',
+        tags: ['Next.js', 'PostgreSQL', 'Claude API', 'Apify', 'Tailwind CSS'],
+        year: '2026',
+        link: 'https://upwork-offer-matcher.up.railway.app/',
+        linkText: 'Live Demo ↗',
+        githubLink: 'https://github.com/klahcen',
+      },
+      {
+        number: '02',
+        title: 'EPS Platform',
+        subtitle: 'Full-Stack Web Platform',
+        desc: 'Full-stack web platform with authentication and database integration, deployed on Railway.',
+        tags: ['Next.js', 'PostgreSQL', 'Tailwind CSS', 'Railway'],
+        year: '2026',
+        link: 'https://eps2009.up.railway.app/',
+        linkText: 'Live Demo ↗',
+      },
+      {
+        number: '03',
+        title: 'Leaderboard App',
+        subtitle: 'Real-Time Rankings',
+        desc: 'Real-time leaderboard platform with live rankings and score tracking.',
+        tags: ['Next.js', 'PostgreSQL', 'Tailwind CSS', 'Railway'],
+        year: '2026',
+        link: 'https://leaderbord.up.railway.app/leaderboard',
+        linkText: 'Live Demo ↗',
+      },
+      {
+        number: '04',
+        title: 'CHU Platform',
+        subtitle: 'Healthcare Web Platform',
+        desc: 'Healthcare web platform with secure authentication and user management.',
+        tags: ['Next.js', 'PostgreSQL', 'Tailwind CSS', 'Railway'],
+        year: '2026',
+        link: 'https://chu.up.railway.app/login',
+        linkText: 'Live Demo ↗',
+      },
+      {
+        number: '05',
         title: 'Webserv',
         subtitle: 'HTTP Server in C++98',
         desc: 'Designed and implemented a fully functional HTTP/1.0-compliant web server from scratch using C++98, with no external libraries. Handled GET, POST, and DELETE methods; implemented CGI execution, file uploads, and custom error pages. Ensured non-blocking I/O using epoll() or equivalent, with support for multiple ports and custom configuration files. Stress-tested for resilience and compared behavior against NGINX for accuracy.',
@@ -1613,7 +1670,7 @@
         linkText: 'View on GitHub ↗',
       },
       {
-        number: '02',
+        number: '06',
         title: 'Inception',
         subtitle: 'System Administration with Docker',
         desc: 'Built a secure multi-service setup with Docker and Docker Compose in a virtual machine. Deployed NGINX (TLSv1.2/1.3), WordPress (PHP-FPM), and MariaDB in isolated containers with volumes. Applied best practices in Dockerfile creation, secret management, and service isolation. Enabled resilience via auto-restart and a custom Docker network. Bonus: Integrated Redis, FTP, Adminer, and a static site.',
@@ -1700,7 +1757,10 @@
               <p class="project-subtitle">${p.subtitle}</p>
               <p class="project-desc">${p.desc}</p>
               <div class="project-tags">${p.tags.map(t => `<span class="project-tag">${t}</span>`).join('')}</div>
-              <a href="${p.link}" class="project-link" target="_blank" rel="noopener noreferrer">${p.linkText}</a>
+              <div class="project-links">
+                <a href="${p.link}" class="project-link" target="_blank" rel="noopener noreferrer">${p.linkText}</a>
+                ${p.githubLink ? `<a href="${p.githubLink}" class="project-link" target="_blank" rel="noopener noreferrer">GitHub ↗</a>` : ''}
+              </div>
             </div>
           </article>
         </div>
