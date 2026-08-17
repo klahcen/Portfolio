@@ -1937,7 +1937,16 @@
       const scrollStart = sectionTop;
       const scrollEnd = sectionTop + projectsSpacer.offsetHeight - viewportHeight;
       const progress = Math.max(0, Math.min(1, (window.scrollY - scrollStart) / (scrollEnd - scrollStart)));
-      const maxTranslate = (slideCount - 1) * window.innerWidth;
+
+      // Measure the actual rendered slide width instead of trusting
+      // window.innerWidth. On many mobile browsers 100vw (the slide's CSS
+      // width) doesn't exactly equal window.innerWidth due to rounding /
+      // viewport quirks — using window.innerWidth here caused the offset to
+      // drift slide after slide, so by the last project the card was cut off
+      // and the previous one peeked in on the side.
+      const firstSlide = projectsTrack.firstElementChild;
+      const slideWidth = firstSlide ? firstSlide.getBoundingClientRect().width : window.innerWidth;
+      const maxTranslate = (slideCount - 1) * slideWidth;
 
       projectsTrack.style.transform = `translateX(-${progress * maxTranslate}px)`;
       projectsProgress.style.transform = `scaleX(${progress})`;
