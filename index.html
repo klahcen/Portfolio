@@ -1911,20 +1911,31 @@
     const projectsProgress = document.getElementById('projectsProgress');
     const slideCount = projects.length;
 
+    let lastWidth = window.innerWidth;
+
     function setProjectsSpacerHeight() {
       // Scale the scroll distance with the number of slides so pacing stays
       // consistent no matter how many projects are added. Shorter per-slide
       // distance on small/touch screens keeps it comfortable to swipe through.
+      // Uses dvh (dynamic viewport height) so it doesn't fight the mobile
+      // browser's address bar showing/hiding while scrolling.
       const isMobile = window.innerWidth <= 640;
       const vhPerSlide = isMobile ? 70 : 100;
-      projectsSpacer.style.height = (slideCount * vhPerSlide) + 'vh';
+      const value = slideCount * vhPerSlide;
+      projectsSpacer.style.height = CSS.supports('height', '1dvh')
+        ? value + 'dvh'
+        : value + 'vh';
     }
 
     function updateProjectsScroll() {
+      // Use the layout viewport (document.documentElement.clientHeight) rather
+      // than window.innerHeight, which changes as the mobile address bar
+      // shows/hides and causes visible jumps in the carousel while scrolling.
+      const viewportHeight = document.documentElement.clientHeight;
       const rect = projectsSection.getBoundingClientRect();
       const sectionTop = rect.top + window.scrollY;
       const scrollStart = sectionTop;
-      const scrollEnd = sectionTop + projectsSpacer.offsetHeight - window.innerHeight;
+      const scrollEnd = sectionTop + projectsSpacer.offsetHeight - viewportHeight;
       const progress = Math.max(0, Math.min(1, (window.scrollY - scrollStart) / (scrollEnd - scrollStart)));
       const maxTranslate = (slideCount - 1) * window.innerWidth;
 
@@ -1934,7 +1945,17 @@
 
     setProjectsSpacerHeight();
     window.addEventListener('scroll', updateProjectsScroll, { passive: true });
-    window.addEventListener('resize', () => { setProjectsSpacerHeight(); updateProjectsScroll(); });
+    window.addEventListener('resize', () => {
+      // Only recompute layout on genuine width changes (rotation, real window
+      // resize). Ignore height-only changes caused by mobile browser chrome
+      // appearing/disappearing during scroll — recalculating there is what
+      // caused the jumpy/broken behavior on mobile.
+      if (window.innerWidth !== lastWidth) {
+        lastWidth = window.innerWidth;
+        setProjectsSpacerHeight();
+      }
+      updateProjectsScroll();
+    });
     updateProjectsScroll();
   </script>
 </body>
