@@ -1332,7 +1332,22 @@
       .hero-actions, .contact-actions { flex-direction: column; }
       .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
 
-      .projects-spacer { height: 150vh; }
+      .project-slide { padding: 0 1rem; }
+      .project-card { width: min(420px, 92vw); }
+      .project-card-body { padding: 1.25rem; }
+      .project-title { font-size: 1.4rem; }
+      .project-desc { font-size: 0.88rem; }
+      .projects-header, .projects-scroll-hint { top: 5rem; }
+      .projects-header h2 { font-size: 1rem; }
+      .projects-scroll-hint { font-size: 0.7rem; }
+      .projects-progress-wrap { bottom: 1.25rem; }
+    }
+
+    @media (max-width: 400px) {
+      .project-card { width: min(340px, 94vw); }
+      .project-card-body { padding: 1rem; }
+      .project-tags { gap: 0.35rem; }
+      .project-tag { font-size: 0.6rem; padding: 0.25rem 0.5rem; }
     }
   </style>
 </head>
@@ -1552,13 +1567,13 @@
               <div class="info-card-value">github.com/klahcen</div>
             </div>
           </a>
-          <a href="https://portfolio-three-xi-q9heawtqsd.vercel.app" class="info-card" target="_blank" rel="noopener noreferrer">
+          <!-- <a href="https://portfolio-three-xi-q9heawtqsd.vercel.app" class="info-card" target="_blank" rel="noopener noreferrer">
             <div class="info-card-icon">◈</div>
             <div>
               <div class="info-card-label">Portfolio</div>
               <div class="info-card-value">portfolio-three-xi-q9heawtqsd.vercel.app</div>
             </div>
-          </a>
+          </a> -->
         </div>
       </div>
       <div class="contact-form-panel reveal">
@@ -1676,6 +1691,26 @@
         desc: 'Built a secure multi-service setup with Docker and Docker Compose in a virtual machine. Deployed NGINX (TLSv1.2/1.3), WordPress (PHP-FPM), and MariaDB in isolated containers with volumes. Applied best practices in Dockerfile creation, secret management, and service isolation. Enabled resilience via auto-restart and a custom Docker network. Bonus: Integrated Redis, FTP, Adminer, and a static site.',
         tags: ['Docker', 'NGINX', 'MariaDB', 'Redis'],
         year: '2025',
+        link: 'https://github.com/klahcen',
+        linkText: 'View on GitHub ↗',
+      },
+      {
+        number: '07',
+        title: 'Music Room',
+        subtitle: 'Collaborative Mobile Music App',
+        desc: 'Mobile, connected, and collaborative music platform built around a strict client/server architecture: the back-end is the single source of truth and the mobile app is only a remote control. Implemented three real-time services — live track voting for events, delegated playback control per device, and multi-user collaborative playlist editing — each with public/private visibility and permission-based licensing. Handled concurrency conflicts (simultaneous votes/edits on the same track), mail/password and social (Facebook/Google) authentication, a documented REST/JSON API, request logging, and API load testing.',
+        tags: ['REST API', 'Mobile', 'Real-time', 'OAuth', 'PostgreSQL'],
+        year: '2026',
+        link: 'https://github.com/klahcen',
+        linkText: 'View on GitHub ↗',
+      },
+      {
+        number: '08',
+        title: 'Inception-of-Things',
+        subtitle: 'Kubernetes with K3s, K3d & Argo CD',
+        desc: 'Multi-part Kubernetes lab progressing from bare VMs to GitOps. Provisioned a 2-node K3s cluster (controller + agent) with Vagrant using dedicated static IPs and passwordless SSH; deployed 3 web apps behind Ingress with host-based routing and replica scaling. Rebuilt the stack with K3d and set up a full continuous-deployment pipeline: Argo CD watching a public GitHub repo, auto-syncing a Dockerized app into a dedicated "dev" namespace, and validating zero-touch version rollouts (v1 → v2) straight from a git push. Bonus: self-hosted GitLab via Helm integrated into the same cluster.',
+        tags: ['Kubernetes', 'K3s', 'K3d', 'Argo CD', 'Vagrant', 'GitOps'],
+        year: '2026',
         link: 'https://github.com/klahcen',
         linkText: 'View on GitHub ↗',
       },
@@ -1857,6 +1892,15 @@
     const projectsProgress = document.getElementById('projectsProgress');
     const slideCount = projects.length;
 
+    function setProjectsSpacerHeight() {
+      // Scale the scroll distance with the number of slides so pacing stays
+      // consistent no matter how many projects are added. Shorter per-slide
+      // distance on small/touch screens keeps it comfortable to swipe through.
+      const isMobile = window.innerWidth <= 640;
+      const vhPerSlide = isMobile ? 70 : 100;
+      projectsSpacer.style.height = (slideCount * vhPerSlide) + 'vh';
+    }
+
     function updateProjectsScroll() {
       const rect = projectsSection.getBoundingClientRect();
       const sectionTop = rect.top + window.scrollY;
@@ -1869,8 +1913,9 @@
       projectsProgress.style.transform = `scaleX(${progress})`;
     }
 
+    setProjectsSpacerHeight();
     window.addEventListener('scroll', updateProjectsScroll, { passive: true });
-    window.addEventListener('resize', updateProjectsScroll);
+    window.addEventListener('resize', () => { setProjectsSpacerHeight(); updateProjectsScroll(); });
     updateProjectsScroll();
   </script>
 </body>
